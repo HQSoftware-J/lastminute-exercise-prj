@@ -1,0 +1,26 @@
+# eclipse
+.classpath
+.project
+.settings
+# sts
+.springBeans
+# Mac
+.DS_Store
+# Maven
+target/
+release.properties
+*.versionsBackup
+*.releaseBackup
+# Idea
+*.iml
+.idea/
+# other
+*.swp
+*.bak
+# netbeans
+nbproject
+
+.tmp
+
+/*.tern-project
+**/model/beans/adapter/
