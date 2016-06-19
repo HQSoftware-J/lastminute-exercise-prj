@@ -1,11 +1,6 @@
-package it.hqsolutions.lastminute.exercise.test;
+package it.hqsolutions.lastminute.exercise.test.junit;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.List;
 
 import org.junit.After;
 import org.junit.Before;
@@ -17,11 +12,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-
-import it.hqsolutions.lastminute.exercise.bl.bo.TaxCalculator;
-import it.hqsolutions.lastminute.exercise.bl.bo.interfaces.Receipt;
-import it.hqsolutions.lastminute.exercise.datatransform.JsonMapper;
+import it.hqsolutions.lastminute.exercise.bl.bo.implementation.TaxCalculatorAsExample;
 import it.hqsolutions.lastminute.exercise.persistence.dao.interfaces.SalableItemTypeDAO;
 import it.hqsolutions.lastminute.exercise.persistence.entity.SalableItem;
 import it.hqsolutions.lastminute.exercise.persistence.entity.SalableItemType;
@@ -29,13 +20,12 @@ import it.hqsolutions.lastminute.exercise.persistence.entity.dictionary.ItemType
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath*:context/lastminute-exercise-context.xml")
-public class ListItemsBOTest extends AbstractJUnit4SpringContextTests {
+public class SingleItemsTest extends AbstractJUnit4SpringContextTests {
+
 	private static SalableItemType taxable10;
 	private static SalableItemType notaxable;
 	@Autowired
 	SalableItemTypeDAO salableItemTypeDAOHashMap;
-	@Autowired
-	JsonMapper jsonMapper;
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -55,22 +45,31 @@ public class ListItemsBOTest extends AbstractJUnit4SpringContextTests {
 	}
 
 	@Test
-	public final void itemsReceiptTest() {
-		InputStream input1 = this.getClass().getResourceAsStream("/mocks/input-1.json");
-		assertNotNull("Mocks not found", input1);
-		List<SalableItem> salableItems = jsonMapper.jsonToObjectList(SalableItem.class, input1);
-
-		// SalableItem[] salableItems = jsonMapper.jsonToObject(input1,
-		// SalableItem[].class);
-		assertNotNull("Failed to create list of items", salableItems);
+	public final void taxableItemNoFreightTest() {
+		boTest(ItemTypeId.TAXABLE10, "taxableItemNoFreight", 14.99f, false, 16.49f, 1.50f);
 	}
 
-	private void itemsReceiptTestChecks(Receipt receipt, String receiptId, Float receiptSalesTaxes, Float receiptTotal,
-			int totalItems) {
-		assertEquals("Receipt id check", receipt.getId(), receiptId);
-		assertEquals("Receipt sales taxes", receipt.getSalesTaxes(), receiptSalesTaxes, 0.005f);
-		assertEquals("Receipt total", receipt.getTotal(), receiptTotal, 0.005f);
-		assertEquals("Total distinguished items on receipt", receipt.getTotalDistinguishedItems());
+	@Test
+	public final void taxableItemFreightTest() {
+		boTest(ItemTypeId.TAXABLE10, "taxableItemFreight", 27.99f, true, 32.19f, 2.80f);
+	}
+
+	@Test
+	public final void noTaxableItemNoFreightTest() {
+		boTest(ItemTypeId.NOTAXABLE, "noTaxableItemNoFreight", 0.85f, false, 0.85f, 0);
+	}
+
+	@Test
+	public final void noTaxableItemFreightTest() {
+		boTest(ItemTypeId.NOTAXABLE, "noTaxableItemFreight", 11.25f, true, 11.85f, 0);
+	}
+
+	private void boTest(String salableItemTypeId, String description, float grossPrice, boolean imported,
+			float effectivePrice, float taxAmount) {
+		SalableItem salableItem = new SalableItem(salableItemTypeId, description, grossPrice, imported);
+		assertEquals(description + " effective price", effectivePrice, salableItem.getEffectivePrice(), 0.05);
+		assertEquals(description + " tax amount", taxAmount, salableItem.getTaxAmount(), 0.05);
+		System.out.println(new StringBuilder(description).append(" test case passed").append(salableItem));
 	}
 
 }

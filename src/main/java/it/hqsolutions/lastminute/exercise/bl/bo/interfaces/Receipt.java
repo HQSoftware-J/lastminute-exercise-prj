@@ -17,6 +17,8 @@ public interface Receipt {
 
 	public int addSalableItem(SalableItem salableItem);
 
-	public String printSimpleReceipt();
+	public String printItSimple();
+
+	public String printItGrouped();
 
 }

@@ -8,6 +8,13 @@ import org.apache.commons.lang3.NotImplementedException;
 import it.hqsolutions.lastminute.exercise.persistence.dao.interfaces.SalableItemTypeDAO;
 import it.hqsolutions.lastminute.exercise.persistence.entity.SalableItemType;
 
+/**
+ * Description: it was intended as a showcase for java8 stream, but you cna find
+ * such a showcase in it.hqsolutions.lastminute.exercise.bl.ReceiptList class
+ * 
+ * @author giorgio
+ *
+ */
 public class SalableItemTypeDAOList implements SalableItemTypeDAO {
 	private List<SalableItemType> taxableItemTypeCatalogueList = new ArrayList<SalableItemType>();
 

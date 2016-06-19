@@ -15,7 +15,7 @@
 		scope="singleton">
 	</bean>
 	<bean id="taxCalculator"
-		class="it.hqsolutions.lastminute.exercise.bl.bo.TaxCalculator"
+		class="it.hqsolutions.lastminute.exercise.bl.bo.implementation.TaxCalculatorAsExample"
 		scope="singleton">
 	</bean>
 	<bean id="jsonMapper"

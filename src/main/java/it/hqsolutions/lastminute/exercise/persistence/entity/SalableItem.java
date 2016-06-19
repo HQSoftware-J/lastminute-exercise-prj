@@ -5,7 +5,10 @@ import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 
-import it.hqsolutions.lastminute.exercise.bl.bo.TaxCalculator;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import it.hqsolutions.lastminute.exercise.bl.bo.interfaces.TaxCalculator;
 
 /**
  * Item thaht could be sale. Doubtful whether setPrice make sense, unless
@@ -31,15 +34,13 @@ public class SalableItem {
 	protected float effectivePrice;
 	protected float taxAmount;
 
-	public SalableItem() {
-	}
-
 	/**
 	 * 
 	 * @param salableItemType
 	 * @param grossPrice
 	 */
-	public SalableItem(String salableItemTypeId, String description, float grossPrice) {
+	public SalableItem(@JsonProperty("salableItemTypeId") String salableItemTypeId,
+			@JsonProperty("description") String description, @JsonProperty("grossPrice") float grossPrice) {
 		this(salableItemTypeId, description, grossPrice, false);
 	}
 
@@ -49,7 +50,10 @@ public class SalableItem {
 	 * @param grossPrice
 	 * @param imported
 	 */
-	public SalableItem(String salableItemTypeId, String description, float grossPrice, boolean imported) {
+	@JsonCreator
+	public SalableItem(@JsonProperty("salableItemTypeId") String salableItemTypeId,
+			@JsonProperty("description") String description, @JsonProperty("grossPrice") float grossPrice,
+			@JsonProperty("imported") boolean imported) {
 		this.salableItemTypeId = salableItemTypeId;
 		this.description = description;
 		this.grossPrice = grossPrice;
@@ -92,8 +96,7 @@ public class SalableItem {
 		return taxAmount;
 	}
 
-	@Override
-	public int hashCode() {
+	public Integer getHashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((description == null) ? 0 : description.hashCode());
@@ -103,7 +106,7 @@ public class SalableItem {
 		result = prime * result + Float.floatToIntBits(netPrice);
 		result = prime * result + ((salableItemTypeId == null) ? 0 : salableItemTypeId.hashCode());
 		result = prime * result + Float.floatToIntBits(taxAmount);
-		return result;
+		return new Integer(result);
 	}
 
 	@Override
@@ -138,9 +141,9 @@ public class SalableItem {
 		return true;
 	}
 
-	public String toSimpleString() {
-		return new StringBuilder(imported ? " imported " : "").append(description).append(" ").append(effectivePrice)
-				.toString();
+	public String toStringForReceipt(int howMany) {
+		return new StringBuilder("" + howMany).append(imported ? " imported " : " ").append(description).append(":")
+				.append(effectivePrice * howMany).toString();
 	}
 
 	@PostConstruct
