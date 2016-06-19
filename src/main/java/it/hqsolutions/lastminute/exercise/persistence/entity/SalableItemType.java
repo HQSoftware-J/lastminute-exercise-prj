@@ -4,6 +4,10 @@ public class SalableItemType {
 	private String id;
 	private Float taxPercentage;
 
+	public SalableItemType() {
+
+	}
+
 	public SalableItemType(String id, Float taxPercentage) {
 		this.id = id;
 		this.taxPercentage = taxPercentage;

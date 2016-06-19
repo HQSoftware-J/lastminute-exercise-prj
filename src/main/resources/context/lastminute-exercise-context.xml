@@ -8,12 +8,22 @@
 		http://www.springframework.org/schema/context
 		http://www.springframework.org/schema/context/spring-context.xsd
 	">
+    <context:spring-configured/>
+    <context:annotation-config />
 	<bean id="salableItemTypeDAOHashMap"
-		class="it.hqsolutions.lastminute.exercise.persistence.dao.implementation.SalableItemTypeDAOHashMap">
+		class="it.hqsolutions.lastminute.exercise.persistence.dao.implementation.SalableItemTypeDAOHashMap"
+		scope="singleton">
 	</bean>
-	<bean id="salableItemBO"
-		class="it.hqsolutions.lastminute.exercise.bl.bo.SalableItemBO"
+	<bean id="taxCalculator"
+		class="it.hqsolutions.lastminute.exercise.bl.bo.TaxCalculator"
+		scope="singleton">
+	</bean>
+	<bean id="jsonMapper"
+		class="it.hqsolutions.lastminute.exercise.datatransform.JsonMapper"
+		scope="singleton">
+	</bean>
+	<bean
+		class="it.hqsolutions.lastminute.exercise.persistence.entity.SalableItem"
 		scope="prototype">
-		<constructor-arg type="java.lang.Class" value="it.hqsolutions.lastminute.exercise.persistence.entity.SalableItem" />
-	</bean>	
+	</bean>
 </beans>

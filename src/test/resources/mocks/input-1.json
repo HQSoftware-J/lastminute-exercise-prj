@@ -1,0 +1,17 @@
+[
+    {
+        "salableItemTypeId": "notaxable",
+        "description": "book",
+        "grossPrice": 12.49
+    },
+    {
+        "salableItemTypeId": "taxable10",
+        "description": "music CD",
+        "grossPrice": 14.99
+    },
+    {
+        "salableItemTypeId": "notaxable",
+        "description": "chocolate bar",
+        "grossPrice": 0.85
+    }
+]

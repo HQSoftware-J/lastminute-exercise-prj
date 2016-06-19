@@ -1,0 +1,10 @@
+[
+    {
+      "id":"taxable10",
+      "taxPercentage":10
+    },
+    {
+      "id":"noTaxable",
+      "taxPercentage":0
+    }
+  ]
