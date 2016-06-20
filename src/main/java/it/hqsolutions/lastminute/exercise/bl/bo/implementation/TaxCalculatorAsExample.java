@@ -2,14 +2,11 @@ package it.hqsolutions.lastminute.exercise.bl.bo.implementation;
 
 import java.math.BigDecimal;
 
-import javax.annotation.PostConstruct;
-
 import org.apache.commons.math3.util.Precision;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import it.hqsolutions.lastminute.exercise.bl.bo.interfaces.TaxCalculator;
 import it.hqsolutions.lastminute.exercise.persistence.dao.interfaces.SalableItemTypeDAO;
-import it.hqsolutions.lastminute.exercise.persistence.entity.SalableItem;
 
 /**
  * Inheritance over composition? Both!

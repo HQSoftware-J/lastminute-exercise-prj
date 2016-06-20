@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.apache.commons.lang3.NotImplementedException;
 
+import it.hqsolutions.lastminute.exercise.exception.DuplicateIdException;
 import it.hqsolutions.lastminute.exercise.persistence.dao.interfaces.SalableItemTypeDAO;
 import it.hqsolutions.lastminute.exercise.persistence.entity.SalableItemType;
 
@@ -22,9 +23,9 @@ public class SalableItemTypeDAOHashMap implements SalableItemTypeDAO {
 	}
 
 	@Override
-	public int insert(SalableItemType salableItemType) {
+	public int insert(SalableItemType salableItemType) throws DuplicateIdException {
 		if (taxableItemTypeCatalogueHM.get(salableItemType.getId()) != null) {
-			throw new RuntimeException("Duplicate id in item type catalogue!");
+			throw new DuplicateIdException("Duplicate id in item type catalogue!");
 		} else {
 			taxableItemTypeCatalogueHM.put(salableItemType.getId(), salableItemType);
 		}

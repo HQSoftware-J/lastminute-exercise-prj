@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.commons.lang3.NotImplementedException;
 
+import it.hqsolutions.lastminute.exercise.exception.DuplicateIdException;
 import it.hqsolutions.lastminute.exercise.persistence.dao.interfaces.SalableItemTypeDAO;
 import it.hqsolutions.lastminute.exercise.persistence.entity.SalableItemType;
 
@@ -26,7 +27,7 @@ public class SalableItemTypeDAOList implements SalableItemTypeDAO {
 	}
 
 	@Override
-	public int insert(SalableItemType salableItemType) {
+	public int insert(SalableItemType salableItemType) throws DuplicateIdException {
 		// TODO Implement it
 		throw new NotImplementedException(" SalableItemTypeDAOList int insert(SalableItemType salableItemType) nyi");
 	}

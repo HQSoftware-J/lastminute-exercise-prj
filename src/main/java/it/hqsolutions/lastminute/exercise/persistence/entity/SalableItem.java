@@ -97,6 +97,11 @@ public class SalableItem {
 	}
 
 	public Integer getHashCode() {
+		return new Integer(hashCode());
+	}
+
+	@Override
+	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((description == null) ? 0 : description.hashCode());
@@ -106,7 +111,7 @@ public class SalableItem {
 		result = prime * result + Float.floatToIntBits(netPrice);
 		result = prime * result + ((salableItemTypeId == null) ? 0 : salableItemTypeId.hashCode());
 		result = prime * result + Float.floatToIntBits(taxAmount);
-		return new Integer(result);
+		return result;
 	}
 
 	@Override
@@ -142,8 +147,8 @@ public class SalableItem {
 	}
 
 	public String toStringForReceipt(int howMany) {
-		return new StringBuilder("" + howMany).append(imported ? " imported " : " ").append(description).append(":")
-				.append(effectivePrice * howMany).toString();
+		return new StringBuilder(Integer.toString(howMany)).append(imported ? " imported " : " ").append(description)
+				.append(":").append(effectivePrice * howMany).toString();
 	}
 
 	@PostConstruct

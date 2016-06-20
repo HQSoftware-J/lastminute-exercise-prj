@@ -12,7 +12,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import it.hqsolutions.lastminute.exercise.bl.bo.implementation.TaxCalculatorAsExample;
 import it.hqsolutions.lastminute.exercise.persistence.dao.interfaces.SalableItemTypeDAO;
 import it.hqsolutions.lastminute.exercise.persistence.entity.SalableItem;
 import it.hqsolutions.lastminute.exercise.persistence.entity.SalableItemType;

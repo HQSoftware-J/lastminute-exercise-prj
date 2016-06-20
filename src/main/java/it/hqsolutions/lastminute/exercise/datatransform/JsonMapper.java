@@ -6,19 +6,21 @@ import java.io.InputStream;
 import java.io.Reader;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
 public class JsonMapper {
 	private ObjectMapper mapper;
+	private static final Logger LOGGER = LoggerFactory.getLogger("HQSLogProfiler");
 
 	public JsonMapper() {
 		mapper = new ObjectMapper();
@@ -33,20 +35,14 @@ public class JsonMapper {
 		return mapper;
 	}
 
-	// TODO Throw and catch right exception
 	public <R> R jsonToObject(String json, Class<R> returnClass) {
 
 		R ret = null;
 		try {
 			ret = mapper.readValue(json, returnClass);
-		} catch (JsonParseException e) {
-			e.printStackTrace();
-		} catch (JsonMappingException e) {
-			e.printStackTrace();
 		} catch (IOException e) {
-			e.printStackTrace();
+			LOGGER.error(e.getMessage());
 		}
-
 		return ret;
 	}
 
@@ -55,12 +51,8 @@ public class JsonMapper {
 		R ret = null;
 		try {
 			ret = mapper.readValue(json, returnClass);
-		} catch (JsonParseException e) {
-			e.printStackTrace();
-		} catch (JsonMappingException e) {
-			e.printStackTrace();
 		} catch (IOException e) {
-			e.printStackTrace();
+			LOGGER.error(e.getMessage());
 		}
 
 		return ret;
@@ -71,12 +63,8 @@ public class JsonMapper {
 		R ret = null;
 		try {
 			ret = mapper.readValue(json, returnClass);
-		} catch (JsonParseException e) {
-			e.printStackTrace();
-		} catch (JsonMappingException e) {
-			e.printStackTrace();
 		} catch (IOException e) {
-			e.printStackTrace();
+			LOGGER.error(e.getMessage());
 		}
 
 		return ret;
@@ -87,12 +75,8 @@ public class JsonMapper {
 		R ret = null;
 		try {
 			ret = mapper.readValue(json, returnClass);
-		} catch (JsonParseException e) {
-			e.printStackTrace();
-		} catch (JsonMappingException e) {
-			e.printStackTrace();
 		} catch (IOException e) {
-			e.printStackTrace();
+			LOGGER.error(e.getMessage());
 		}
 
 		return ret;
@@ -103,8 +87,8 @@ public class JsonMapper {
 
 		try {
 			data = mapper.readValue(json, type);
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (IOException e) {
+			LOGGER.error(e.getMessage());
 		}
 		return data;
 	}
@@ -115,15 +99,8 @@ public class JsonMapper {
 		try {
 			ret = mapper.readValue(json, new TypeReference<List<R>>() {
 			});
-		} catch (JsonParseException e) {
-			// TODO Auto-generated catch block
-
-		} catch (JsonMappingException e) {
-			// TODO Auto-generated catch block
-
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-
+			LOGGER.error(e.getMessage());
 		}
 
 		return ret;
@@ -134,8 +111,7 @@ public class JsonMapper {
 		try {
 			jsonObj = mapper.writeValueAsString(obj);
 		} catch (JsonProcessingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOGGER.error(e.getMessage());
 		}
 		return jsonObj;
 	}

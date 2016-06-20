@@ -21,10 +21,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-
 import it.hqsolutions.lastminute.exercise.bl.bo.implementation.ReceiptList;
-import it.hqsolutions.lastminute.exercise.bl.bo.implementation.TaxCalculatorAsExample;
 import it.hqsolutions.lastminute.exercise.bl.bo.interfaces.Receipt;
 import it.hqsolutions.lastminute.exercise.datatransform.JsonMapper;
 import it.hqsolutions.lastminute.exercise.persistence.dao.interfaces.SalableItemTypeDAO;
