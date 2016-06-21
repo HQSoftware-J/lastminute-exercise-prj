@@ -30,17 +30,14 @@
 	    class="it.hqsolutions.lastminute.exercise.decorator.implementations.PrettyPrinterZeroZeroDot"
 	    scope="singleton">
 	</bean>
-	<!--  Some path problem... too late to solve it now!!!
 		<bean id="lastminute-exercise-prj"
 		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="locations">
 			<list>
-				<value>file:properties/logging/aspect-logging.properties
+				<value>classpath:properties/logging/aspect-logging.properties
 				</value>
 			</list>			
 		</property>
      <property name="ignoreUnresolvablePlaceholders" value="true"/>
 	</bean>
-	 -->
-	
 </beans>
