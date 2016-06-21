@@ -6,16 +6,22 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
+
 import it.hqsolutions.lastminute.exercise.bl.bo.interfaces.Receipt;
 import it.hqsolutions.lastminute.exercise.decorator.implementations.PrettyPrinterZeroZeroDot;
+import it.hqsolutions.lastminute.exercise.decorator.interfaces.PrettyPrinter;
 import it.hqsolutions.lastminute.exercise.persistence.entity.SalableItem;
 
 /*
  * BO to handle a receipt.
  * It'd be nice if it is an injected bean, but some work to do...
  */
-// TODO Make it a bean
+@Configurable
 public class ReceiptList implements Receipt {
+	@Autowired
+	PrettyPrinter prettyPrinter;
 	private String id;
 	private List<SalableItem> salableItems;
 	private double salesTaxes;
@@ -91,9 +97,8 @@ public class ReceiptList implements Receipt {
 	}
 
 	private void stringFooter(StringBuilder printedReceipt) {
-		PrettyPrinterZeroZeroDot prettyPrinterZeroZeroDot = new PrettyPrinterZeroZeroDot();
-		printedReceipt.append("Sales Taxes: " + prettyPrinterZeroZeroDot.prettyDouble(salesTaxes)).append("\n")
-				.append("Total: ").append(prettyPrinterZeroZeroDot.prettyDouble(total));
+		printedReceipt.append("Sales Taxes: " + prettyPrinter.prettyDouble(salesTaxes)).append("\n").append("Total: ")
+				.append(prettyPrinter.prettyDouble(total));
 	}
 
 }

@@ -1,0 +1,29 @@
+<configuration>
+	<appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+		<!-- encoders are assigned the type ch.qos.logback.classic.encoder.PatternLayoutEncoder 
+			by default -->
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{5} - %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+	<appender name="LogProfilerFile"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>../logs/hqs-profiler-lastminute-exercise.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>../logs/hqs-profiler-lastminute-exercise.%d{yyyy-MM-dd}.log.zip
+			</fileNamePattern>
+			<maxHistory>30</maxHistory>
+		</rollingPolicy>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<Pattern>%d{yyyy-MM-dd_HH:mm:ss.SSS};[%thread];%-5level;%logger;%msg%n
+			</Pattern>
+		</encoder>
+	</appender>
+	<logger name="HQSLogProfiler" additivity="true" level="DEBUG">
+		<appender-ref ref="LogProfilerFile" />
+	</logger>
+	<root level="INFO">
+		<appender-ref ref="stdout" />
+	</root>
+</configuration>

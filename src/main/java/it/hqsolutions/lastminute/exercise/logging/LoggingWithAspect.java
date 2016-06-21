@@ -56,6 +56,7 @@ public class LoggingWithAspect {
 	@Value("${logging.systemout}")
 	private String logSystemOut;
 
+	// I Prefer it has its own mapper...
 	private ObjectMapper getMapper() {
 		if (mapper == null) {
 			mapper = new ObjectMapper();

@@ -40,4 +40,5 @@
 		</property>
      <property name="ignoreUnresolvablePlaceholders" value="true"/>
 	</bean>
+	<bean id="loggingAspect" class="it.hqsolutions.lastminute.exercise.logging.LoggingWithAspect" factory-method="aspectOf" />
 </beans>
