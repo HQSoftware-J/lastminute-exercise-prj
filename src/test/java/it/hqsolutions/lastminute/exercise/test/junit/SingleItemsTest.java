@@ -50,21 +50,21 @@ public class SingleItemsTest extends AbstractJUnit4SpringContextTests {
 
 	@Test
 	public final void taxableItemFreightTest() {
-		boTest(ItemTypeId.TAXABLE10, "taxableItemFreight", 27.99f, true, 32.19f, 2.80f);
+		boTest(ItemTypeId.TAXABLE10, "taxableItemFreight", 27.99, true, 32.19, 4.20);
 	}
 
 	@Test
 	public final void noTaxableItemNoFreightTest() {
-		boTest(ItemTypeId.NOTAXABLE, "noTaxableItemNoFreight", 0.85f, false, 0.85f, 0);
+		boTest(ItemTypeId.NOTAXABLE, "noTaxableItemNoFreight", 0.85, false, 0.85, 0);
 	}
 
 	@Test
 	public final void noTaxableItemFreightTest() {
-		boTest(ItemTypeId.NOTAXABLE, "noTaxableItemFreight", 11.25f, true, 11.85f, 0);
+		boTest(ItemTypeId.NOTAXABLE, "noTaxableItemFreight", 11.25, true, 11.85, 0.6);
 	}
 
-	private void boTest(String salableItemTypeId, String description, float grossPrice, boolean imported,
-			float effectivePrice, float taxAmount) {
+	private void boTest(String salableItemTypeId, String description, double grossPrice, boolean imported,
+			double effectivePrice, double taxAmount) {
 		SalableItem salableItem = new SalableItem(salableItemTypeId, description, grossPrice, imported);
 		assertEquals(description + " effective price", effectivePrice, salableItem.getEffectivePrice(), 0.05);
 		assertEquals(description + " tax amount", taxAmount, salableItem.getTaxAmount(), 0.05);

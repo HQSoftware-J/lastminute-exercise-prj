@@ -1,0 +1,14 @@
+[
+    {
+        "salableItemTypeId": "notaxable",
+        "description": "box of chocolates",
+        "imported":true,
+        "grossPrice": 10.00
+    },
+    {
+        "salableItemTypeId": "taxable10",
+        "description": "bottle of perfume",
+        "imported":true,
+        "grossPrice": 47.50
+    }
+]

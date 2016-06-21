@@ -2,13 +2,13 @@ package it.hqsolutions.lastminute.exercise.persistence.entity;
 
 public class SalableItemType {
 	private String id;
-	private Float taxPercentage;
+	private double taxPercentage;
 
 	public SalableItemType() {
 
 	}
 
-	public SalableItemType(String id, Float taxPercentage) {
+	public SalableItemType(String id, double taxPercentage) {
 		this.id = id;
 		this.taxPercentage = taxPercentage;
 	}
@@ -17,8 +17,8 @@ public class SalableItemType {
 		this.id = id;
 	}
 
-	public Float getTaxPercentage() {
-		return this.taxPercentage == null ? 0f : this.taxPercentage;
+	public double getTaxPercentage() {
+		return this.taxPercentage;
 	}
 
 	public String getId() {

@@ -93,19 +93,6 @@ public class JsonMapper {
 		return data;
 	}
 
-	public <R> List<R> jsonToObjectList(Class<R> returnClass, InputStream json) {
-
-		List<R> ret = null;
-		try {
-			ret = mapper.readValue(json, new TypeReference<List<R>>() {
-			});
-		} catch (IOException e) {
-			LOGGER.error(e.getMessage());
-		}
-
-		return ret;
-	}
-
 	public String objectToJSON(Object obj) {
 		String jsonObj = null;
 		try {

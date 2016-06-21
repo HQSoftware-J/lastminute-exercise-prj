@@ -1,6 +1,7 @@
 package it.hqsolutions.lastminute.exercise.bl.bo.implementation;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 import org.apache.commons.math3.util.Precision;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,29 +37,48 @@ public class TaxCalculatorAsExample implements TaxCalculator {
 
 	}
 
-	/* (non-Javadoc)
-	 * @see it.hqsolutions.lastminute.exercise.bl.bo.TaxCalculatorInterface#calculateTaxAmount(java.lang.String, float)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see it.hqsolutions.lastminute.exercise.bl.bo.TaxCalculatorInterface#
+	 * calculateTaxAmount(java.lang.String, double)
 	 */
 	@Override
-	public float calculateTaxAmount(String salableItemTypeId, float grossPrice) {
-		return Precision.round(salableItemTypeDAOHashMap.load(salableItemTypeId).getTaxPercentage() / 100 * grossPrice,
-				2, BigDecimal.ROUND_HALF_EVEN);
+	public double calculateTaxAmount(String salableItemTypeId, double grossPrice, boolean imported) {
+		return roundUp05(
+				calculateGrossPriceTaxes(salableItemTypeId, grossPrice) + calculateFreightTaxes(grossPrice, imported));
 	}
 
-	/* (non-Javadoc)
-	 * @see it.hqsolutions.lastminute.exercise.bl.bo.TaxCalculatorInterface#calculateNetPrice(float, float)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see it.hqsolutions.lastminute.exercise.bl.bo.TaxCalculatorInterface#
+	 * calculateEffectivePrice(boolean, double, double)
 	 */
 	@Override
-	public float calculateNetPrice(float grossPrice, float taxAmount) {
-		return Precision.round(grossPrice + taxAmount, 2);
+	public double calculateEffectivePrice(double grossPrice, double taxAmount) {
+		return Precision.round(taxAmount + grossPrice, 2, BigDecimal.ROUND_HALF_EVEN);
 	}
 
-	/* (non-Javadoc)
-	 * @see it.hqsolutions.lastminute.exercise.bl.bo.TaxCalculatorInterface#calculateEffectivePrice(boolean, float, float)
-	 */
-	@Override
-	public float calculateEffectivePrice(boolean imported, float netPrice, float grossPrice) {
-		return imported ? Precision.round(netPrice + grossPrice * .05f, 2) : Precision.round(netPrice, 2);
+	private double calculateFreightTaxes(double grossPrice, boolean imported) {
+		return imported ? roundUp05(grossPrice * .05) : 0;
+	}
+
+	private double calculateGrossPriceTaxes(String salableItemTypeId, double grossPrice) {
+		return roundUp05(salableItemTypeDAOHashMap.load(salableItemTypeId).getTaxPercentage() / 100 * grossPrice);
+	}
+
+	private double roundUp05(double amount) {
+		return Math.ceil((amount) * 20) / 20.0;
+	}
+
+	private double round(double amount, int places) {
+		if (places < 0)
+			throw new IllegalArgumentException();
+
+		BigDecimal bd = new BigDecimal(amount);
+		bd = bd.setScale(places, RoundingMode.HALF_UP);
+		return bd.doubleValue();
 	}
 
 }

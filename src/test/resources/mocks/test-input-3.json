@@ -1,0 +1,24 @@
+[
+    {
+        "salableItemTypeId": "taxable10",
+        "description": "bottle of perfume",
+        "imported": true,
+        "grossPrice": 27.99
+    },
+     {
+        "salableItemTypeId": "taxable10",
+        "description": "bottle of perfume",
+        "grossPrice": 18.99
+    },
+    {
+        "salableItemTypeId": "notaxable",
+        "description": "packet of headache pills",
+        "grossPrice": 9.75
+    },
+    {
+        "salableItemTypeId": "notaxable",
+        "description": "box of chocolates",
+        "imported":true,
+        "grossPrice": 11.25
+    }
+]

@@ -1,23 +1,23 @@
 package it.hqsolutions.lastminute.exercise.test.support;
 
 public class ReceiptTestResult {
-	private float salesTaxes;
-	private float total;
+	private double salesTaxes;
+	private double total;
 	private String id;
 
-	public float getSalesTaxes() {
+	public double getSalesTaxes() {
 		return salesTaxes;
 	}
 
-	public void setSalesTaxes(float salesTaxes) {
+	public void setSalesTaxes(double salesTaxes) {
 		this.salesTaxes = salesTaxes;
 	}
 
-	public float getTotal() {
+	public double getTotal() {
 		return total;
 	}
 
-	public void setTotal(float total) {
+	public void setTotal(double total) {
 		this.total = total;
 	}
 

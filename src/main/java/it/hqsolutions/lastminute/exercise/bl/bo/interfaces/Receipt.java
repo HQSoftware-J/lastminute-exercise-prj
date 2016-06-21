@@ -9,11 +9,11 @@ public interface Receipt {
 
 	public List<SalableItem> getSalableItems();
 
-	public float getSalesTaxes();
+	public double getSalesTaxes();
 
-	public float getTotal();
+	public double getTotal();
 
-	public float getTotalDistinguishedItems();
+	public double getTotalDistinguishedItems();
 
 	public int addSalableItem(SalableItem salableItem);
 

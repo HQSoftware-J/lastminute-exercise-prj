@@ -1,5 +1,7 @@
 package it.hqsolutions.lastminute.exercise.persistence.entity;
 
+import java.text.DecimalFormat;
+
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,8 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import it.hqsolutions.lastminute.exercise.bl.bo.interfaces.TaxCalculator;
+import it.hqsolutions.lastminute.exercise.decorator.implementations.PrettyPrinterZeroZeroDot;
+import it.hqsolutions.lastminute.exercise.decorator.interfaces.PrettyPrinter;
 
 /**
  * Item thaht could be sale. Doubtful whether setPrice make sense, unless
@@ -26,13 +30,14 @@ import it.hqsolutions.lastminute.exercise.bl.bo.interfaces.TaxCalculator;
 public class SalableItem {
 	@Autowired
 	TaxCalculator taxCalculator;
+	@Autowired
+	PrettyPrinter prettyPrinter;
 	protected String salableItemTypeId;
-	protected float grossPrice;
+	protected double grossPrice;
 	protected boolean imported;
 	protected String description;
-	protected float netPrice;
-	protected float effectivePrice;
-	protected float taxAmount;
+	protected double effectivePrice;
+	protected double taxAmount;
 
 	/**
 	 * 
@@ -40,7 +45,7 @@ public class SalableItem {
 	 * @param grossPrice
 	 */
 	public SalableItem(@JsonProperty("salableItemTypeId") String salableItemTypeId,
-			@JsonProperty("description") String description, @JsonProperty("grossPrice") float grossPrice) {
+			@JsonProperty("description") String description, @JsonProperty("grossPrice") double grossPrice) {
 		this(salableItemTypeId, description, grossPrice, false);
 	}
 
@@ -52,7 +57,7 @@ public class SalableItem {
 	 */
 	@JsonCreator
 	public SalableItem(@JsonProperty("salableItemTypeId") String salableItemTypeId,
-			@JsonProperty("description") String description, @JsonProperty("grossPrice") float grossPrice,
+			@JsonProperty("description") String description, @JsonProperty("grossPrice") double grossPrice,
 			@JsonProperty("imported") boolean imported) {
 		this.salableItemTypeId = salableItemTypeId;
 		this.description = description;
@@ -68,11 +73,11 @@ public class SalableItem {
 		this.imported = imported;
 	}
 
-	public float getGrossPrice() {
+	public double getGrossPrice() {
 		return grossPrice;
 	}
 
-	public void setGrossPrice(float grossPrice) {
+	public void setGrossPrice(double grossPrice) {
 		this.grossPrice = grossPrice;
 	}
 
@@ -84,15 +89,11 @@ public class SalableItem {
 		return description;
 	}
 
-	public float getNetPrice() {
-		return netPrice;
-	}
-
-	public float getEffectivePrice() {
+	public double getEffectivePrice() {
 		return effectivePrice;
 	}
 
-	public float getTaxAmount() {
+	public double getTaxAmount() {
 		return taxAmount;
 	}
 
@@ -105,12 +106,16 @@ public class SalableItem {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((description == null) ? 0 : description.hashCode());
-		result = prime * result + Float.floatToIntBits(effectivePrice);
-		result = prime * result + Float.floatToIntBits(grossPrice);
+		long temp;
+		temp = Double.doubleToLongBits(effectivePrice);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(grossPrice);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
 		result = prime * result + (imported ? 1231 : 1237);
-		result = prime * result + Float.floatToIntBits(netPrice);
 		result = prime * result + ((salableItemTypeId == null) ? 0 : salableItemTypeId.hashCode());
-		result = prime * result + Float.floatToIntBits(taxAmount);
+		temp = Double.doubleToLongBits(taxAmount);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + ((taxCalculator == null) ? 0 : taxCalculator.hashCode());
 		return result;
 	}
 
@@ -128,34 +133,36 @@ public class SalableItem {
 				return false;
 		} else if (!description.equals(other.description))
 			return false;
-		if (Float.floatToIntBits(effectivePrice) != Float.floatToIntBits(other.effectivePrice))
+		if (Double.doubleToLongBits(effectivePrice) != Double.doubleToLongBits(other.effectivePrice))
 			return false;
-		if (Float.floatToIntBits(grossPrice) != Float.floatToIntBits(other.grossPrice))
+		if (Double.doubleToLongBits(grossPrice) != Double.doubleToLongBits(other.grossPrice))
 			return false;
 		if (imported != other.imported)
-			return false;
-		if (Float.floatToIntBits(netPrice) != Float.floatToIntBits(other.netPrice))
 			return false;
 		if (salableItemTypeId == null) {
 			if (other.salableItemTypeId != null)
 				return false;
 		} else if (!salableItemTypeId.equals(other.salableItemTypeId))
 			return false;
-		if (Float.floatToIntBits(taxAmount) != Float.floatToIntBits(other.taxAmount))
+		if (Double.doubleToLongBits(taxAmount) != Double.doubleToLongBits(other.taxAmount))
+			return false;
+		if (taxCalculator == null) {
+			if (other.taxCalculator != null)
+				return false;
+		} else if (!taxCalculator.equals(other.taxCalculator))
 			return false;
 		return true;
 	}
 
 	public String toStringForReceipt(int howMany) {
 		return new StringBuilder(Integer.toString(howMany)).append(imported ? " imported " : " ").append(description)
-				.append(":").append(effectivePrice * howMany).toString();
+				.append(": ").append(prettyPrinter.prettyDouble(effectivePrice * howMany)).toString();
 	}
 
 	@PostConstruct
 	private void calculateTax() {
-		this.taxAmount = taxCalculator.calculateTaxAmount(salableItemTypeId, grossPrice);
-		this.netPrice = taxCalculator.calculateNetPrice(grossPrice, taxAmount);
-		this.effectivePrice = taxCalculator.calculateEffectivePrice(imported, netPrice, grossPrice);
+		this.taxAmount = taxCalculator.calculateTaxAmount(salableItemTypeId, grossPrice, imported);
+		this.effectivePrice = taxCalculator.calculateEffectivePrice(grossPrice, taxAmount);
 	}
 
 }

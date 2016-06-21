@@ -7,14 +7,20 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import it.hqsolutions.lastminute.exercise.bl.bo.interfaces.Receipt;
+import it.hqsolutions.lastminute.exercise.decorator.implementations.PrettyPrinterZeroZeroDot;
 import it.hqsolutions.lastminute.exercise.persistence.entity.SalableItem;
 
+/*
+ * BO to handle a receipt.
+ * It'd be nice if it is an injected bean, but some work to do...
+ */
+// TODO Make it a bean
 public class ReceiptList implements Receipt {
 	private String id;
 	private List<SalableItem> salableItems;
-	private float salesTaxes;
-	private float total;
-	private float totalDistinguishedItems;
+	private double salesTaxes;
+	private double total;
+	private double totalDistinguishedItems;
 
 	public ReceiptList(String id) {
 		this.id = id;
@@ -24,8 +30,8 @@ public class ReceiptList implements Receipt {
 	public ReceiptList(String id, List<SalableItem> salableItems) {
 		this.id = id;
 		this.salableItems = salableItems;
-		salesTaxes = new BigDecimal(salableItems.stream().mapToDouble(SalableItem::getTaxAmount).sum()).floatValue();
-		total = new BigDecimal(salableItems.stream().mapToDouble(SalableItem::getEffectivePrice).sum()).floatValue();
+		salesTaxes = new BigDecimal(salableItems.stream().mapToDouble(SalableItem::getTaxAmount).sum()).doubleValue();
+		total = new BigDecimal(salableItems.stream().mapToDouble(SalableItem::getEffectivePrice).sum()).doubleValue();
 	}
 
 	@Override
@@ -39,17 +45,17 @@ public class ReceiptList implements Receipt {
 	}
 
 	@Override
-	public float getSalesTaxes() {
+	public double getSalesTaxes() {
 		return salesTaxes;
 	}
 
 	@Override
-	public float getTotal() {
+	public double getTotal() {
 		return total;
 	}
 
 	@Override
-	public float getTotalDistinguishedItems() {
+	public double getTotalDistinguishedItems() {
 		return totalDistinguishedItems;
 	}
 
@@ -81,12 +87,13 @@ public class ReceiptList implements Receipt {
 	}
 
 	private StringBuilder stringHeader() {
-		StringBuilder printedReceipt = new StringBuilder(id).append(":\n");
-		return printedReceipt;
+		return new StringBuilder(id).append(":\n");
 	}
 
 	private void stringFooter(StringBuilder printedReceipt) {
-		printedReceipt.append("Sales Taxes: " + salesTaxes).append("\n").append("Total: ").append(total);
+		PrettyPrinterZeroZeroDot prettyPrinterZeroZeroDot = new PrettyPrinterZeroZeroDot();
+		printedReceipt.append("Sales Taxes: " + prettyPrinterZeroZeroDot.prettyDouble(salesTaxes)).append("\n")
+				.append("Total: ").append(prettyPrinterZeroZeroDot.prettyDouble(total));
 	}
 
 }
