@@ -76,7 +76,7 @@ public class TaxCalculatorAsExample implements TaxCalculator {
 		if (places < 0)
 			throw new IllegalArgumentException();
 
-		BigDecimal bd = new BigDecimal(amount);
+		BigDecimal bd = BigDecimal.valueOf(amount);
 		bd = bd.setScale(places, RoundingMode.HALF_UP);
 		return bd.doubleValue();
 	}

@@ -56,7 +56,7 @@ public class LoggingWithAspect {
 	@Value("${logging.systemout}")
 	private String logSystemOut;
 
-	// I Prefer it has its own mapper...
+	// I Prefer it has its own mapper... but it should be a bean
 	private ObjectMapper getMapper() {
 		if (mapper == null) {
 			mapper = new ObjectMapper();
@@ -160,8 +160,7 @@ public class LoggingWithAspect {
 	}
 
 	private String retrieveInputArgs(Object[] args) {
-		StringBuffer buffer = new StringBuffer();
-		buffer.append("(");
+		StringBuilder buffer = new StringBuilder("(");
 		for (int i = 0; i < args.length; i++) {
 			Object arg = args[i];
 			try {
